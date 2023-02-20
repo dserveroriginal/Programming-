@@ -3,9 +3,11 @@
 import java.util.HashMap;
 import java.util.Scanner;
 
-class Main {
+public class DNA {
     static HashMap<Character, Byte> numberMap = new HashMap<Character, Byte>();
     static HashMap<Byte, Character> nukleotideMap = new HashMap<Byte, Character>();
+
+
 
     static void decompile(String[] arguments) {
         if (arguments.length - 2 != Byte.parseByte(arguments[1])) {
@@ -31,18 +33,18 @@ class Main {
 
         for (Byte index = 1; index < values.length; index++) {
             number = values[index];
-            if (values[0]<output.length()+4) {
+            if (values[0] < output.length() + 4) {
                 edge = (byte) (values[0] - output.length());
                 number = (byte) (number >> 2 * edge);
             }
             while (part.length() < edge) {
-                if (number<0&&(edge %2!=0)) {
+                if (number < 0 && (edge % 2 != 0)) {
                     value = (byte) (number & 0b11);
-                    value=(byte) (3+value);
-                }else{
+                    value = (byte) (3 + value);
+                } else {
                     value = (byte) (number & 0b11);
                 }
-                
+
                 part = nukleotideMap.get(value) + part;
                 number = (byte) (number >> 2);
             }
@@ -50,7 +52,21 @@ class Main {
             part = "";
         }
         System.out.println(output);
+        return;
     }
+
+
+    
+    static void compile(String arguments) {
+        for (char character : arguments.toCharArray()) {
+            if (!numberMap.containsKey(character)) {
+                System.out.print("wrong command format");
+                return;
+            }
+        }
+
+    }
+
 
     public static void main(String[] args) {
 
@@ -71,6 +87,8 @@ class Main {
 
             if (command[0].contains("decomp")) {
                 decompile(command);
+            } else if (command[0].contains("comp")) {
+                compile(command[1]);
             } else if (command[0].contains("exit")) {
                 break;
             }
