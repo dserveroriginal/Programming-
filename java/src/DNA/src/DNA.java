@@ -59,10 +59,15 @@ public class DNA {
     
     static void compile(String arguments) {
         for (char character : arguments.toCharArray()) {
-            if (!numberMap.containsKey(character)) {
+            if (!numberMap.containsKey(Character.toUpperCase(character))) {
                 System.out.print("wrong command format");
                 return;
             }
+        }
+        Byte[] output = new Byte[(byte)Math.ceil(arguments.length()/4.0)];
+        Byte index=0;
+        for (Byte charIndex = 0; charIndex < arguments.length(); charIndex++) {
+            
         }
 
     }
