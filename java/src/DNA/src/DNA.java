@@ -7,8 +7,6 @@ public class DNA {
     static HashMap<Character, Byte> numberMap = new HashMap<Character, Byte>();
     static HashMap<Byte, Character> nukleotideMap = new HashMap<Byte, Character>();
 
-
-
     static void decompile(String[] arguments) {
         if (arguments.length - 2 != Byte.parseByte(arguments[1])) {
             System.out.print("wrong command format");
@@ -55,8 +53,6 @@ public class DNA {
         return;
     }
 
-
-    
     static void compile(String arguments) {
         for (char character : arguments.toCharArray()) {
             if (!numberMap.containsKey(Character.toUpperCase(character))) {
@@ -64,14 +60,38 @@ public class DNA {
                 return;
             }
         }
-        Byte[] output = new Byte[(byte)Math.ceil(arguments.length()/4.0)];
-        Byte index=0;
-        for (Byte charIndex = 0; charIndex < arguments.length(); charIndex++) {
-            
+        Byte[] output = new Byte[(byte) Math.ceil(arguments.length() / 4.0)];
+        for (int index = 0; index < output.length; index++) {
+            output[index] = 0;
+        }
+        Byte bitIndex = 1, outputIndex = 0;
+        output[outputIndex] = (byte) (output[outputIndex] + numberMap.get(arguments.charAt(0)));
+        for (Byte charIndex = 1; charIndex < arguments.length(); charIndex++) {
+            if (bitIndex > 3) {
+                bitIndex = 0;
+                outputIndex++;
+            }
+            output[outputIndex] = (byte) (output[outputIndex] << 2);
+            output[outputIndex] = (byte) (output[outputIndex] + numberMap.get(arguments.charAt(charIndex)));
+            bitIndex++;
+        }
+        while (bitIndex < 4) {
+            output[outputIndex] = (byte) (output[outputIndex] << 2);
+            bitIndex++;
         }
 
+        String outputString = String.format("%X", arguments.length());
+        for (int index = 0; index < output.length; index++) {
+            outputString = outputString + String.format(" %X", output[index]);
+        }
+        System.out.println(outputString);
     }
 
+    static void about () {
+        System.out.println("This program is a DNA compiler/decompiler.");
+        System.out.println("It can compile DNA sequences into hexodecimal format and decompile binary format into DNA sequences.");
+        System.out.println("It was created by Lukas Pahomovs for the course Computer Science at the Riga Tehnical University.");
+    }
 
     public static void main(String[] args) {
 
@@ -94,7 +114,9 @@ public class DNA {
                 decompile(command);
             } else if (command[0].contains("comp")) {
                 compile(command[1]);
-            } else if (command[0].contains("exit")) {
+            } else if (command[0].contains("about")) {
+                about();
+            }else if (command[0].contains("exit")) {
                 break;
             }
         }
