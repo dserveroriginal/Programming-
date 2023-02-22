@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class DNA {
     static HashMap<Character, Byte> numberMap = new HashMap<Character, Byte>();
     static HashMap<Byte, Character> nukleotideMap = new HashMap<Byte, Character>();
-
+    
     static void decompile(String[] arguments) {
         if (arguments.length - 2 != Byte.parseByte(arguments[1])) {
             System.out.print("wrong command format");
@@ -51,7 +51,7 @@ public class DNA {
         }
         System.out.println(output);
         return;
-    }
+}
 
     static void compile(String arguments) {
         for (char character : arguments.toCharArray()) {
