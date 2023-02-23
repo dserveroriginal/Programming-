@@ -90,7 +90,7 @@ public class DNA {
     static void about () {
         System.out.println("This program is a DNA compiler/decompiler.");
         System.out.println("It can compile DNA sequences into hexodecimal format and decompile binary format into DNA sequences.");
-        System.out.println("It was created by Lukas Pahomovs for the course Computer Science at the Riga Tehnical University.");
+        System.out.println("It was created by Lukas Pahomovs for the course of Computer Science at the Riga Tehnical University.");
     }
 
     public static void main(String[] args) {
