@@ -53,12 +53,11 @@ public class Turism {
             inputArray = input.split(" ");
             switch (inputArray[0]) {
                 case "add":
-                    rides = add(rides, inputArray[1]);
+                    rides = add(rides, inputArray[1].split(";"));
                     break;
                 case "del":
                     id = Integer.parseInt(inputArray[1]);
-                    if (del(rides, id) != null)
-                        rides = del(rides, id);
+                    rides = del(rides, id);
                     break;
                 case "print":
                     System.out.println("------------------------------------------------------------");
@@ -67,9 +66,11 @@ public class Turism {
                     for (Ride ride : rides) {
                         System.out.println(ride.toFormattedString());
                     }
+                    System.out.println("------------------------------------------------------------");
+
                     break;
                 case "edit":
-                    rides = edit(rides, inputArray);
+                    rides = edit(rides, inputArray[1].split(";"));
                     break;
                 default:
                     System.out.println("wrong command");
@@ -80,8 +81,36 @@ public class Turism {
         consoleScanner.close();
     }
 
-    private static ArrayList<Ride> edit(ArrayList<Ride> rides, String[] inputArray) {
-        return null;
+    private static ArrayList<Ride> edit(ArrayList<Ride> rides, String[] arguments) {
+        if (!check(arguments)){
+            return rides;
+        }
+        int id = Integer.parseInt(arguments[0]),rideIndex = -1;
+        for (int index = 0; index < rides.size(); index++) {
+            if (rides.get(index).id == id) {
+                rideIndex=index;
+                break;
+            }
+        }
+        if (rideIndex==-1) {
+            System.out.println("wrong id");
+            return rides;
+        }
+        Ride ride = rides.get(rideIndex);
+        if (!arguments[1].equals(""))
+            ride.destination = arguments[1];
+        if (!arguments[2].equals(""))
+            ride.date = arguments[2];
+        if (!arguments[3].equals("")) 
+            ride.period = Integer.parseInt(arguments[3]);
+        if (!arguments[4].equals(""))
+            ride.price = Double.parseDouble(arguments[4]);
+        if (!arguments[5].equals(""))
+            ride.type = Vehicle.valueOf(arguments[5].toUpperCase());
+        
+        System.out.println("changed");
+        rides.set(rideIndex, ride);
+        return rides;
     }
 
     private static ArrayList<Ride> readFile(ArrayList<Ride> rides, String fileName) {
@@ -91,7 +120,7 @@ public class Turism {
             fileScanner = new Scanner(file);
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine();
-                rides = add(rides, line);
+                rides = add(rides, line.split(";"));
             }
         } catch (FileNotFoundException e) {
             System.out.println("file not found");
@@ -100,23 +129,22 @@ public class Turism {
     }
 
     private static ArrayList<Ride> del(ArrayList<Ride> rides, int id) {
-        boolean found = false;
+        int rideIndex = -1;
         for (int index = 0; index < rides.size(); index++) {
             if (rides.get(index).id == id) {
-                rides.remove(index);
-                found = true;
+                rideIndex=index;
                 break;
             }
         }
-        if (!found) {
+        if (rideIndex==-1) {
             System.out.println("wrong id");
-            return null;
+            return rides;
         }
+        rides.remove(rideIndex);
         return rides;
     }
 
-    private static ArrayList<Ride> add(ArrayList<Ride> rides, String inputArray) {
-        String[] arguments = inputArray.split(";");
+    private static ArrayList<Ride> add(ArrayList<Ride> rides, String[] arguments) {
         if (!check(arguments))
             return rides;
         int id = Integer.parseInt(arguments[0]);
@@ -150,8 +178,10 @@ public class Turism {
         try {
             Double.parseDouble(arguments[4]);
         } catch (Exception e) {
-            System.out.println("wrong price");
-            return false;
+            if(!(arguments[4].matches(""))){ 
+                System.out.println("wrong price");
+                return false;
+            }
         }
         if (!(arguments[5].toUpperCase().matches("BUS|TRAIN|PLANE|BOAT"))) {
             System.out.println("wrong vehicle");
