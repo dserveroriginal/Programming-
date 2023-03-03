@@ -1,9 +1,9 @@
-package Turism.src;
+package Tourism.src;
 
 
 
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -74,7 +74,7 @@ public class Tourism {
 
     public static void main(String[] args) {
         ArrayList<Ride> rides = new ArrayList<Ride>();
-        rides = readFile(rides, "java/src/Turism/src/test/db.csv");
+        rides = readFile(rides, "java/src/Tourism/src/test/db.csv");
         Scanner consoleScanner = new Scanner(System.in);
         String input;
         String[] inputArray;
@@ -114,7 +114,27 @@ public class Tourism {
             }
 
         }
+        writeFile(rides, "java/src/Tourism/src/test/db.csv");
         consoleScanner.close();
+    }
+
+
+
+    private static void writeFile(ArrayList<Ride> rides, String fileName) {
+        File file = new File(fileName);
+        FileWriter fileWriter;
+        try {
+            fileWriter = new FileWriter(file);
+            for (Ride ride : rides) {
+                fileWriter.write(ride.toString());
+                fileWriter.write("\n");
+                
+            }
+            fileWriter.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return;
     }
 
 
@@ -204,8 +224,8 @@ public class Tourism {
                 String line = fileScanner.nextLine();
                 rides = add(rides, line.split(";"), true);
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("file not found");
+        } catch (Exception e) {
+            System.out.println(e);
         }
         return rides;
     }
