@@ -224,7 +224,6 @@ public class NumericFiles {
 	}
 
 	public static void about() {
-		// TODO insert information about author
 		System.out.println("221RDB047 Lukas Pahomovs 14");
 	}
 
