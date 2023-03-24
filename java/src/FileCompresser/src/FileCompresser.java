@@ -1,41 +1,63 @@
 package FileCompresser.src;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.util.Scanner;
 
 public class FileCompresser {
     public static void main(String[] args) {
-        while (true) {
-            menu();
-        }
-    }
-
-    private static void menu() {
         Scanner scanner = new Scanner(System.in);
-        String next = scanner.nextLine();
-        if (next.equals("comp")) compress();
-        else if (next.equals("decomp")) decompress();
-        else if (next.equals("size")) size();
-        else if (next.equals("equal")) equality();
-        else if (next.equals("about")) about();
-        else if (next.equals("exit")) exit();
-        else System.out.println("invalid command");  
-        scanner.close();      
+        while (true) {
+            String next = scanner.nextLine();
+            switch (next) {
+                case "comp":
+                    compress(scanner);
+                    break;
+                case "decomp":
+                    decompress(scanner);
+                    break;
+                case "size":
+                    size(scanner);
+                    break;
+                case "equal":
+                    equality(scanner);
+                    break;
+                case "about":
+                    about();
+                    break;
+                case "exit":    
+                    exit(scanner);
+                    break;
+            
+                default:
+                    break;
+            }
+            // if (next.equals("comp")) compress();
+            // else if (next.equals("decomp")) decompress();
+            // else if (next.equals("size")) size();
+            // else if (next.equals("equal")) equality();
+            // else if (next.equals("about")) about();
+            // else if (next.equals("exit")) {
+            //     scanner.close();
+            //     exit();
+            // }
+            // else System.out.println("invalid command");
+
+              
+        }
+        
     }
 
-    private static void exit() {
-        saveFile();
+    private static void exit(Scanner scanner) {
+        scanner.close();
         System.exit(0);
     }
 
-    private static void saveFile() {
-        // :TODO saveFile
-    }
-
-    private static void size() {
+    private static void size(Scanner scanner) {
         // :TODO size
     }
 
-    private static void equality() {
+    private static void equality(Scanner scanner) {
         // :TODO equality
     }
 
@@ -45,11 +67,61 @@ public class FileCompresser {
         // :TODO complete about
     }
 
-    private static void decompress() {
+    private static void decompress(Scanner scanner) {
+        System.out.println("archive name:");
+        String archiveName = scanner.nextLine();
+        System.out.println("file name:");
+        String fileName = scanner.nextLine();
+        String archive=readFile(archiveName);
+        if (archive.equals("")) return;
+
         // :TODO decompress
+
+        String file = "";
+        saveFile(file,fileName);
+        
     }
 
-    private static void compress() {
+    private static void compress(Scanner scanner) {
+        System.out.println("source file name:");
+        String fileName = scanner.nextLine();
+        System.out.println("archive name:");
+        String archiveName = scanner.nextLine();
+        String file=readFile(fileName);
+        if (file.equals("")) return;
+
         // :TODO compress
+
+        String archive = "";
+        saveFile(archive,archiveName);
+        
+    }
+
+    private static String readFile(String fileName) {
+        try {
+            File file = new File(fileName);
+            Scanner scanner = new Scanner(file);
+            String contents = "";
+            while (scanner.hasNextLine()) {
+                contents += scanner.nextLine();
+            }
+            scanner.close();
+            return contents;
+        } catch (Exception e) {
+            System.out.println("file not found");
+            return "";
+        }
+    }
+
+    private static void saveFile(String contents, String filename) {
+        try {
+            File file = new File(filename);
+            file.createNewFile();
+            BufferedWriter writer = new BufferedWriter(new java.io.FileWriter(file));
+            writer.write(contents);
+            writer.close();
+        } catch (Exception e) {
+            System.out.println("an error occurred");
+        }
     }
 }
