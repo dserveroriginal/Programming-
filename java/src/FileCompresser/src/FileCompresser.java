@@ -25,10 +25,10 @@ public class FileCompresser {
                 case "about":
                     about();
                     break;
-                case "exit":    
+                case "exit":
                     exit(scanner);
                     break;
-            
+
                 default:
                     break;
             }
@@ -38,14 +38,13 @@ public class FileCompresser {
             // else if (next.equals("equal")) equality();
             // else if (next.equals("about")) about();
             // else if (next.equals("exit")) {
-            //     scanner.close();
-            //     exit();
+            // scanner.close();
+            // exit();
             // }
             // else System.out.println("invalid command");
 
-              
         }
-        
+
     }
 
     private static void exit(Scanner scanner) {
@@ -54,11 +53,39 @@ public class FileCompresser {
     }
 
     private static void size(Scanner scanner) {
-        // :TODO size
+        System.out.println("file name:");
+        String fileName = scanner.nextLine();
+        File file = new File(fileName);
+        System.out.println("size: " + file.length());
     }
 
     private static void equality(Scanner scanner) {
-        // :TODO equality
+        System.out.println("first file name:");
+        String firstFileName = scanner.nextLine();
+        System.out.println("second file name:");
+        String secondFileName = scanner.nextLine();
+
+        try{
+
+            File firstFile = new File(firstFileName);
+            File secondFile = new File(secondFileName);
+            if (firstFile.length() != secondFile.length()) {
+                System.out.println("false");
+                return;
+            }
+
+            String firstFileString = firstFile.toString();
+            String secondFileString = secondFile.toString();
+            if (firstFileString.equals(secondFileString)) {
+                System.out.println("false");
+                return;
+            }
+
+        } catch (Exception e) {
+            System.out.println("an error occurred");
+        }
+
+        System.out.println("true");
     }
 
     private static void about() {
@@ -68,18 +95,21 @@ public class FileCompresser {
     }
 
     private static void decompress(Scanner scanner) {
+
         System.out.println("archive name:");
         String archiveName = scanner.nextLine();
         System.out.println("file name:");
         String fileName = scanner.nextLine();
-        String archive=readFile(archiveName);
-        if (archive.equals("")) return;
+
+        String archive = readFile(archiveName);
+        if (archive.equals(""))
+            return;
 
         // :TODO decompress
 
         String file = "";
-        saveFile(file,fileName);
-        
+        saveFile(file, fileName);
+
     }
 
     private static void compress(Scanner scanner) {
@@ -87,14 +117,16 @@ public class FileCompresser {
         String fileName = scanner.nextLine();
         System.out.println("archive name:");
         String archiveName = scanner.nextLine();
-        String file=readFile(fileName);
-        if (file.equals("")) return;
+        
+        String file = readFile(fileName);
+        if (file.equals(""))
+            return;
 
         // :TODO compress
 
         String archive = "";
-        saveFile(archive,archiveName);
-        
+        saveFile(archive, archiveName);
+
     }
 
     private static String readFile(String fileName) {
